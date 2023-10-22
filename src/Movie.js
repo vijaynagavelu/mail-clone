@@ -18,10 +18,7 @@ const collectionRef = collection(db, "favouriteMovies")
 export default function Movie() {
 
     const [movie, setMovie] = useState(null);
-    const [movieDetails, setMovieDetails] = useState(null);
-    const [documentId, setDocumentId] = useState();
     const [user, setUser] = useState("");
-    const [timer, setTimer] = useState(0);
     const params = useParams();
 
     const getMovie = useCallback(async () => {
@@ -30,18 +27,10 @@ export default function Movie() {
         const data = await getDocs(movieMatch);
         if (data.docs[0]) {
             // console.log(data.docs[0].data());
-            setDocumentId(data.docs[0].id);
-            setMovieDetails(data.docs[0].data());
-            setTimeout(() => {
-                setTimer(1);
-            }, 100);
+
 
         } else {
-            setMovieDetails(null);
             console.log("No such document!");
-            setTimeout(() => {
-                setTimer(1);
-            }, 700);
         }
     }, [params.Id, user])
 
