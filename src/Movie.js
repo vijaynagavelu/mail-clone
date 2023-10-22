@@ -2,11 +2,9 @@ import "./movie.css"
 import { db } from "./firebase-config";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import 'react-circular-progressbar/dist/styles.css';
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from './firebase-config';
 import {
-
     getDocs,
     collection,
     query,
