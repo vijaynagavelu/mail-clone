@@ -1,7 +1,6 @@
 import "./styles.css";
 import { db } from "./firebase-config";
 import { Fragment, useCallback, useEffect, useState } from "react";
-import Nav from "./Nav";
 import { Link } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from './firebase-config';
@@ -50,7 +49,6 @@ export default function Favourites() {
 
     return (
         < div className="App" >
-            <Nav />
 
             <main>
                 {loadingArray.map(function (array, index) {

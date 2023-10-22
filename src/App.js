@@ -1,27 +1,22 @@
 import "./styles.css";
-import Pagination from './components/Pagination';
 import { Fragment, useEffect, useState } from "react";
-import Nav from "./Nav";
 import { Link } from "react-router-dom";
 
 export default function App() {
 
   const [movies, setMovies] = useState([]);
-  const [totalPages, setTotalPages] = useState(null);
-  const [pageNumber, setPageNumber] = useState(1);
   const loadingArray = [1, 2, 3, 4, 5, 6, 7, 8]
 
 
   useEffect(() => {
-    const endpoint = `https://flipkart-email-mock.vercel.app/?page=${pageNumber}`;
+    const endpoint = `https://flipkart-email-mock.vercel.app/`;
     fetch(endpoint)
       .then(blob => blob.json())
       .then(api => {
         console.log(api.list)
         setMovies(api.list)
-        setTotalPages(20)
       });
-  }, [pageNumber]);
+  }, []);
 
   function formatUnixTimestamp(timestamp) {
     const date = new Date(timestamp);
@@ -42,12 +37,14 @@ export default function App() {
   }
 
 
+  function profileLetter(letter) {
+    if (letter) {
+      return ((letter?.charAt(0)).toUpperCase());
+    }
+  }
 
   return (
     < div className="App" >
-      <Nav />
-
-      <Pagination pageNumber={pageNumber} setPageNumber={setPageNumber} totalPages={totalPages} />
 
       <main>
         {loadingArray.map(function (array, index) {
@@ -62,23 +59,30 @@ export default function App() {
           )
         })}
 
+        <div className={movies.length === 0 ? " hide" : 'row '}>
+          <div className="filter">Filter By:</div>
+          <div className="space">Unread</div>
+          <div className="space">Read</div>
+          <div className="space">Favourites</div>
+        </div>
+
         {movies.map(function (movie, index) {
           return (
             < Fragment key={index} >
               <div className="outer">
                 <Link className="link" to={(`/Movie/${movie.id}`)}>
                   <div className="row content">
-                    <div className={movies.length === 0 ? " hide" : 'row  '}>
+                    <div className={movies.length === 0 ? " hide" : 'row  container'}>
 
-                      <div className="subContent1">
-                        F
+                      <div className="subContent">
+                        {profileLetter(movie.from.name)}
                       </div>
 
-                      <div className="textAlignLeft subContent2">
-                        <span className="releaseDate fontSize14px">From:{movie.from.name} {movie.from.email}</span>
-                        <span className="movieTitle">Subject {movie.subject}</span>
-                        <p className="overview fontSize13px">{movie.short_description}</p>
-                        <span className="releaseDate fontSize14px">{formatUnixTimestamp(movie.date)}</span>
+                      <div className="textAlignLeft">
+                        <span className="fontSize14px">From: <span className="fontWeight600 grayText">{movie.from.name} {movie.from.email}</span></span>
+                        <div className="">Subject: <span className="fontWeight600 grayText">{movie.subject}</span></div>
+                        <p className=" fontSize13px">{movie.short_description}</p>
+                        <span className=" fontSize14px">{formatUnixTimestamp(movie.date)}</span>
                       </div>
                     </div>
                   </div>
